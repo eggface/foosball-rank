@@ -1,0 +1,105 @@
+<body>
+
+	<div class="container">
+		<header>
+			<h1>Foosball Ranking Record</h1>
+		</header>
+		<p></p>
+
+
+	<div class="row" >
+    <div class="col-xs-3">
+        <img src="foosball.jpg"  alt="Foosball" />
+    </div>
+
+		<div class="panel-body col-xs-6">
+			<form class="form-inline foosRankRecord">
+				<!--<div class="form-group">-->
+				<div>Please record winners and losers. Single, Double and Mix are supported.</div>
+				<div>
+					<label for="winner1">Winner</label>
+					<input name="winner1" type="winner" class="form-control" id="winner1" placeholder="Enter winner name">
+					<label for="winner2"> & </label>
+					<input name="winner2" type="winner" class="form-control" id="winner2" placeholder="Enter winner name">
+				</div>
+				<div>
+					<label for="loser1">Loser</label>
+					<input name="loser1" type="loser1" class="form-control" id="loser1" placeholder="Enter loser name">
+					<label for="loser2"> & </label>
+					<input name="loser2" type="loser2" class="form-control" id="loser2" placeholder="Enter loser name">
+				</div>
+				<div class="form-group">
+					<label for="date">Match Date</label>
+					<input name="date" type="date" class="form-control" id="date" placeholder="Enter date">
+				</div>
+				<button type="submit" class="btn btn-primary">Add</button>
+			</form>
+		</div>
+	</div>
+
+		<div class="panel-body">
+			{{> tableTemplate}}
+		</div>
+
+		<div class="panel-body">
+			{{> chartTemplate}}
+		</div>
+	</div>
+</body>
+
+<template name="tableTemplate">
+	<ul id="myTab" class="nav nav-tabs">
+		<li class="active"><a href="#1vs1" data-toggle="tab">1 VS 1</a></li>
+		<li><a href="#1vs2" data-toggle="tab">1 VS 2</a></li>
+		<li><a href="#2vs2" data-toggle="tab">2 VS 2</a></li>
+	</ul>
+
+	<div id="myTabContent" class="tab-content">
+		<div class="tab-pane fade in active" id="1vs1">
+				{{> reactiveTable class="table table-bordered table-striped" collection=foosRank1v1 settings=theSettings1v1 }}
+		</div>
+		<div class="tab-pane fade" id="1vs2">
+			{{> reactiveTable class="table table-bordered table-striped" collection=foosRank1v2 settings=theSettings2v2 }}
+		</div>
+		<div class="tab-pane fade" id="2vs2">
+			{{> reactiveTable class="table table-bordered table-striped" collection=foosRank2v2 settings=theSettings2v2 }}
+		</div>
+	</div>
+</template>
+
+<template name="chartTemplate">
+	<div class="panel-heading">
+			<h1 >Rates Trend</h1> 
+	</div>
+
+	<div class="col-xs-2">
+		<select id="selectSinglePlayer" name="selectSinglePlayer"   class="form-control input-md"  required="">
+			<option disabled="" selected="">Select Player</option>
+			{{#each singlePlayers}}
+				<option>{{name}}</option>
+			{{/each}}
+
+			{{#each doublePlayers}}
+			<option>{{player1}} & {{player2}}</option>
+			{{/each}}
+		</select>
+	</div>
+
+	<div class="col-xs-2">
+		<select id="selectCompetitor" name="selectCompetitor"   class="form-control input-md"  required="">
+			<option disabled="" selected="">Competitor</option>
+				<option>All</option>
+				{{#each singlePlayers}}
+				<option>{{name}}</option>
+				{{/each}}
+
+				{{#each doublePlayers}}
+				<option>{{player1}} & {{player2}}</option>
+				{{/each}}
+		</select>
+	</div>
+	
+	<div class="panel-body">In this demo, only data in 2016 is included.</div>
+	<div id="playersChart">{{playersChart}}</div>
+</template>
+
